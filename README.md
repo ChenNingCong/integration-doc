@@ -34,4 +34,4 @@ Then you create a header called `X-User-Context` with the following value:
     
     Here is a screenshot:
     ![alt text](assets/modheader.png)
-6.
+6. So if you are responsible for the auth api, you can update your backend service to read this X-User-Context and use JSON.parse to get the user information.
