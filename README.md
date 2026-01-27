@@ -25,3 +25,5 @@ Follow the following instruction to setup the database first
    ```
 Launch of service - this will also pull the newest codes for you automatically:
 `python deployment.py`
+
+Then go to `http://localhost:8080/`. Note: it's localhost, not `127.0.0.1`
