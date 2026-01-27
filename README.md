@@ -20,9 +20,15 @@ Follow the following instruction to setup the database first
 5. Under `forum-email-service`, run `cp .env.example .env`. Then you need to replace these fields in the `.env` file:
    ```
    SMTP_USER=<your gmail>
-   SMTP_PASSWORD=<16 character password no space>
+   SMTP_PASSWORD=<16 character password without space>
    SMTP_FROM_NAME=<your app name>
    ```
+   To get the password, you need to add an App password in your google account:
+
+   1. Enable 2-Factor Authentication on Google account
+   2. Generate App Password: https://myaccount.google.com/apppasswords
+   3. Copy the 16-character password (without space!!!)
+
 Launch of service - this will also pull the newest codes for you automatically:
 `python deployment.py`
 
