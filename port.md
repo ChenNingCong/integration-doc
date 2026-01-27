@@ -8,3 +8,4 @@
 | `http://localhost:8004` | 8004 | `/api/messages/*` | Message Microservice |
 | `http://localhost:8005` | 8005 | `/api/history/*` | History Microservice |
 | `http://localhost:8006` | 8006 | `/api/files/*` | File Microservice |
+| `http://localhost:8007` | 8007 | `/api/internal/email*` | Email Microservice |
