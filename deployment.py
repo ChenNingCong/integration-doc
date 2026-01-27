@@ -393,5 +393,6 @@ if __name__ == "__main__":
         setup_auth_service()
         setup_user_service()
         setup_file_service()
+        setup_email_service()
         setup_message_service()
         print("\n✅ All services processed.")
