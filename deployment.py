@@ -357,15 +357,15 @@ def setup_email_service():
     print("⚙️  Setting up Email Service...")
     # Copy the .env.example to .env
     example_env_path = os.path.join(service_path, ".env.example")
-    target_env_path = os.path.join(service_path, ".env")
-    assert os.path.exists(example_env_path)
-    import shutil
-    shutil.copy(example_env_path, target_env_path)
+    # target_env_path = os.path.join(service_path, ".env")
+    # assert os.path.exists(example_env_path)
+    # import shutil
+    # shutil.copy(example_env_path, target_env_path)
     try:
         # Install dependencies
         subprocess.run(["npm", "install"], cwd=service_path, check=True)
         # Start the server
-        run_server("forum-email-service", ["npm", "start"], cwd=service_path, check=True)
+        run_server("forum-email-service", ["npm", "run", "dev"], cwd=service_path, check=True)
     except subprocess.CalledProcessError:
         print("❌ Failed to set up the Email Service.")
 
