@@ -86,7 +86,7 @@ def sync():
 
 
 def kill_node_processes():
-    for port in [3000, 8080, 8001, 8002, 8003, 8004, 8005, 8006]:
+    for port in [3000, 8080, 8001, 8002, 8003, 8004, 8005, 8006, 8007]:
         try:
             # Find and kill node processes on the specified port
             result = subprocess.run(["lsof", "-t", f"-i:{port}"], capture_output=True, text=True)
