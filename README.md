@@ -1,8 +1,6 @@
 # integration-doc
 Follow the following instruction to setup the database first
-1. Create a root folder to hold all project source codes (let's say it's `project`). You can also use VSCode's workspace to work on multiple projects together.
-   
-   ![alt text](assets/image.png)
+1. Run `python deployment.py --sync-only` to clone all the folders
    
 2. Create a `.env` file in current folder (not in the post&reply folder) (The `MONGO_URI` and `MONGO_PASSWORD` are the same as the one in the post&reply service)
 ```
