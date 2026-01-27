@@ -376,7 +376,6 @@ if __name__ == "__main__":
     parser.add_argument('--sync-only', action='store_true', help="Only sync repositories and exit   ")
     parser.add_argument('--no-log-cleanup', action='store_true', help="Skip cleanup log files")
     args = parser.parse_args()
-    validate_env()
     kill_node_processes()
     if not args.no_log_cleanup:
         # Clean up log files
@@ -387,6 +386,7 @@ if __name__ == "__main__":
     if not args.no_sync:
         sync()
     if not args.sync_only:
+        validate_env()
         setup_gateway()
         setup_frontend()
         setup_post_reply_service()
