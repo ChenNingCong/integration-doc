@@ -5,14 +5,24 @@ Follow the following instruction to setup the database first
 3. Run `pip install -r requirements.txt` to install package
 4. Run `python server.py`. This will launch an admin panel for you
 5. Clone all the repos by clicking `sync repos`.
-6. Create a `.env` file in current folder (not in the post&reply folder) (The `MONGO_URI` and `MONGO_PASSWORD` are the same as the one in the post&reply service)
+6. Modify the gateway's config file
+   Inside `forum-gateway/config/system.config.yml`, there is a field:
+   ```
+   plugins:
+      example: # "express-gateway-plugin-example"
+         param1: 'global per plugin param1'
+         package: '/home/chenningcong/Desktop/integration-doc/forum-gateway/config/manifest.js'
+   ```
+   Please replace the `package` path by the *absolute path* on your computer to `forum-gateway/config/policies/example-policy.js`
+   This is a bug in express-gateway so we need to circumvent this problem by setting up the path manually.
+7. Create a `.env` file in current folder (not in the post&reply folder) (The `MONGO_URI` and `MONGO_PASSWORD` are the same as the one in the post&reply service)
    ```
       ACCESS_TOKEN_SECRET=8efaf6d52fa6d6674e6f9f27d72e0a76285a7be1b93772d7e90f5639c28449c58686f37203f45a629ca4b22d3af7751848ed34cab37297d6f159ee99b835c9de
       MONGO_URI=mongodb+srv://chenningcong393069484_db_user:<PASSWORD>@cluster0.4pa51vd.mongodb.net/?appName=Cluster0
       MONGO_PASSWORD=<replace your password here>
    ```
-7. Under `forum-auth-service`, run `cp .env.example .env`
-8. Under `forum-user-service`, run `cp .env.example .env`. Then run:
+8. Under `forum-auth-service`, run `cp .env.example .env`
+9. Under `forum-user-service`, run `cp .env.example .env`. Then run:
    ```
    sudo mysql -e "DROP USER IF EXISTS 'user_service_user'@'localhost'; CREATE USER 'user_service_user'@'localhost' IDENTIFIED BY 'your_password'; DROP DATABASE IF EXISTS user_service_db; CREATE DATABASE IF NOT EXISTS user_service_db; GRANT ALL PRIVILEGES ON user_service_db.* TO 'user_service_user'@'localhost'; FLUSH PRIVILEGES;"
    ```
@@ -36,7 +46,7 @@ Follow the following instruction to setup the database first
    ```
    in deployment.py
 
-9. Under `forum-email-service`, run `cp .env.example .env`. Then you need to replace these fields in the `.env` file:
+10. Under `forum-email-service`, run `cp .env.example .env`. Then you need to replace these fields in the `.env` file:
    ```
    SMTP_USER=<your gmail>
    SMTP_PASSWORD=<16 character password without space>
@@ -48,7 +58,7 @@ Follow the following instruction to setup the database first
    2. Generate App Password: https://myaccount.google.com/apppasswords
    3. Copy the 16-character password (without space!!!)
 
-10. Under `forum-message-service`, run `cp .env.example .env`. Then in `.env`:
+11. Under `forum-message-service`, run `cp .env.example .env`. Then in `.env`:
    ```
    PORT=8004
    DB_HOST=localhost
@@ -62,7 +72,7 @@ Follow the following instruction to setup the database first
    sudo mysql -e "DROP USER IF EXISTS 'message_service_user'@'localhost'; CREATE USER 'message_service_user'@'localhost' IDENTIFIED BY 'your_password'; DROP DATABASE IF EXISTS message_service_db; CREATE DATABASE IF NOT EXISTS message_service_db; GRANT ALL PRIVILEGES ON message_service_db.* TO 'message_service_user'@'localhost'; FLUSH PRIVILEGES;"
    ```
 
-11. Under `forum-file-service`, copy the `.env` file in slack to the folder:
+12. Under `forum-file-service`, copy the `.env` file in slack to the folder:
    It looks like this:
    ```
    # File service runs at http://localhost:8006
