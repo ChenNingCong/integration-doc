@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Microservice Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>🛠 Microservice Admin</h1>
+        <div>
+            <button onclick="action('/api/sync')" class="btn btn-primary">Sync Repos</button>
+            <button onclick="action('/api/kill-all')" class="btn btn-danger">Kill All Ports</button>
+            <button onclick="updateStatus()" class="btn btn-secondary">Refresh Status</button>
+            <button onclick="action('/api/launch-all')" class="btn btn-success">Launch All Services</button>
+        </div>
+    </div>
+    <a href="http://localhost:8080">Go to home page</a>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Port</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="service-table">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function updateStatus() {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        const tbody = document.getElementById('service-table');
+        tbody.innerHTML = '';
+        const array = [...Object.entries(data)];
+        array.sort((a, b) => a[1].port - b[1].port);
+        for (const [name, {status, port}] of array) {
+            const badgeClass = status === 'Online' ? 'bg-success' : 'bg-secondary';
+            // Onclick, navigate to service URL
+            tbody.innerHTML += `
+                <tr>
+                    <td><a href="http://localhost:${port}" target="_blank">${name}</a></td>
+                    <td>${port}</td>
+                    <td><span class="badge ${badgeClass}">${status}</span></td>
+                    <td>
+                        <button onclick="launch('${name}')" class="btn btn-sm btn-outline-success" ${status === 'Online' ? 'disabled' : ''}>Launch</button>
+                        <button onclick="action('/api/kill-service/${name}')" class="btn btn-sm btn-outline-danger" ${status === 'Offline' ? 'disabled' : ''}>Kill</button>
+                    </td>
+                </tr>`;
+        }
+    }
+
+    async function action(url) {
+        const res = await fetch(url, {method: 'POST'});
+        const data = await res.json();
+        alert(data.message || data.error);
+        updateStatus();
+    }
+
+    async function launch(name) {
+        await fetch(`/api/launch/${name}`, {method: 'POST'});
+        setTimeout(updateStatus, 2000); // Wait for boot
+    }
+
+    setInterval(updateStatus, 3000);
+    updateStatus();
+</script>
+</body>
+</html>

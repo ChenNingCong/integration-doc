@@ -84,20 +84,21 @@ def sync():
             except subprocess.CalledProcessError:
                 print(f"❌ Failed to clone {repo_name}")
 
+def kill_one_node_processes(port:int):
+    try:
+        # Find and kill node processes on the specified port
+        result = subprocess.run(["lsof", "-t", f"-i:{port}"], capture_output=True, text=True)
+        pids = result.stdout.strip().split('\n')
+        for pid in pids:
+            if pid:
+                subprocess.run(["kill", "-9", pid])
+                print(f"🛑 Killed process {pid} on port {port}")
+    except Exception as e:
+        print(f"❌ Error killing processes on port {port}: {e}")
 
 def kill_node_processes():
     for port in [3000, 8080, 8001, 8002, 8003, 8004, 8005, 8006, 8007]:
-        try:
-            # Find and kill node processes on the specified port
-            result = subprocess.run(["lsof", "-t", f"-i:{port}"], capture_output=True, text=True)
-            pids = result.stdout.strip().split('\n')
-            for pid in pids:
-                if pid:
-                    subprocess.run(["kill", "-9", pid])
-                    print(f"🛑 Killed process {pid} on port {port}")
-        except Exception as e:
-            print(f"❌ Error killing processes on port {port}: {e}")
-
+        kill_one_node_processes(port)
 
 """
 3. Gateway setup
@@ -308,12 +309,6 @@ def setup_user_service():
         print("❌ Failed to set up the User Service.")      
 
 
-def setup_file_service():
-    pass
-
-def setup_message_service():
-    pass  # Implementation would be similar to setup_post_reply_service()
-
 """
 ## Quick Start (Windows)
 
@@ -369,6 +364,34 @@ def setup_email_service():
     except subprocess.CalledProcessError:
         print("❌ Failed to set up the Email Service.")
 
+def setup_message_service():
+    service_path = os.path.join(os.getcwd(), "forum-message-service")
+    print("⚙️  Setting up Message Service...")
+    try:
+        # Install dependencies
+        subprocess.run(["npm", "install"], cwd=service_path, check=True)
+        # Start the server
+        run_server("forum-message-service", ["npm", "run", "dev"], cwd=service_path, check=True)
+    except subprocess.CalledProcessError:
+        print("❌ Failed to set up the Message Service.")
+
+def setup_file_service():
+    service_path = os.path.join(os.getcwd(), "forum-file-service")
+    # python setup
+    print("⚙️  Setting up File Service...")
+    try:    
+        venv_path = os.path.join(service_path, "venv")
+        if not os.path.exists(venv_path):
+            subprocess.run(["python3", "-m", "venv", "venv"], cwd=service_path, check=True)
+        assert os.path.exists(venv_path)
+        # Install dependencies
+        subprocess.run([os.path.join(venv_path, "bin", "pip"), "install", "-r", "requirements.txt"], cwd=service_path, check=True)
+        # Start the server
+        os.environ["FLASK_DEBUG"] = "1"
+        run_server("forum-file-service", [os.path.join(venv_path, "bin", "python"), "app.py"], cwd=service_path, check=True)    
+    except subprocess.CalledProcessError:
+        print("❌ Failed to set up the File Service.")
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Deploy Forum Application Services")
@@ -387,12 +410,12 @@ if __name__ == "__main__":
         sync()
     if not args.sync_only:
         validate_env()
-        setup_gateway()
         setup_frontend()
-        setup_post_reply_service()
+        setup_gateway()
         setup_auth_service()
         setup_user_service()
+        setup_post_reply_service()
+        setup_message_service()
         setup_file_service()
         setup_email_service()
-        setup_message_service()
         print("\n✅ All services processed.")

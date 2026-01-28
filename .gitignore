@@ -1,3 +1,6 @@
 logs/
 .env
 forum-*
+venv/
+__pycache__/
+*.pyc
