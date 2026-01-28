@@ -234,7 +234,10 @@ def setup_post_reply_service():
                 'type': 'test'
             },
             'postRead': {
-                'type': 'rabbitmq'
+                'type': 'rabbitmq',
+                'rabbitmq': {
+                    'url': "amqp://localhost"
+                }
             }
         }
         yaml.dump(config, config_file)  
