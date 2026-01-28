@@ -90,6 +90,19 @@ Follow the following instruction to setup the database first
    MAX_FILE_MB=10
    ```
 
+13. Under `forum-history-service`, run `cp .env.example .env`. Then in `.env`:
+   ```
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=history_service_user
+   DB_PASSWORD=your_password
+   DB_NAME=history_service_db
+   ```
+   Then run:
+   ```
+   sudo mysql -e "DROP USER IF EXISTS 'history_service_user'@'localhost'; CREATE USER 'history_service_user'@'localhost' IDENTIFIED BY 'your_password'; DROP DATABASE IF EXISTS history_service_db; CREATE DATABASE IF NOT EXISTS history_service_db; GRANT ALL PRIVILEGES ON history_service_db.* TO 'history_service_user'@'localhost'; FLUSH PRIVILEGES;"
+   ```
+   
 Launch of service:
 Run `python server.py` if you haven't do so. This will launch an admin panel for you:
 
