@@ -392,6 +392,23 @@ def setup_file_service():
     except subprocess.CalledProcessError:
         print("❌ Failed to set up the File Service.")
 
+
+def setup_history_service():
+    service_path = os.path.join(os.getcwd(), "forum-history-service")
+    print("⚙️  Setting up History Service...")
+    try:    
+        venv_path = os.path.join(service_path, "venv")
+        if not os.path.exists(venv_path):
+            subprocess.run(["python3", "-m", "venv", "venv"], cwd=service_path, check=True)
+        assert os.path.exists(venv_path)
+        # Install dependencies
+        subprocess.run([os.path.join(venv_path, "bin", "pip"), "install", "-r", "requirements.txt"], cwd=service_path, check=True)
+        # Start the server
+        os.environ["FLASK_DEBUG"] = "1"
+        run_server("forum-history-service", [os.path.join(venv_path, "bin", "python"), "app.py"], cwd=service_path, check=True)    
+    except subprocess.CalledProcessError:
+        print("❌ Failed to set up the History Service.")
+        
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Deploy Forum Application Services")

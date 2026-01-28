@@ -13,7 +13,7 @@ SERVICES = {
     "User Service": {"port": 8002, "launcher": deployment.setup_user_service, "folder": "forum-user-service"},
     "PostReply Service": {"port": 8003, "launcher": deployment.setup_post_reply_service, "folder": "forum-post-reply-service"},
     "Message Service": {"port": 8004, "launcher": deployment.setup_message_service, "folder": "forum-message-service"},
-    "History Service": {"port": 8005, "launcher": lambda: print("History setup not defined"), "folder": "forum-history-service"},
+    "History Service": {"port": 8005, "launcher": deployment.setup_history_service, "folder": "forum-history-service"},
     "File Service": {"port": 8006, "launcher": deployment.setup_file_service, "folder": "forum-file-service"},
     "Email Service": {"port": 8007, "launcher": deployment.setup_email_service, "folder": "forum-email-service"},
 }
