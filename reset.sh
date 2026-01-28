@@ -1,0 +1,3 @@
+sudo mysql -e "DROP USER IF EXISTS 'user_service_user'@'localhost'; CREATE USER 'user_service_user'@'localhost' IDENTIFIED BY 'your_password'; DROP DATABASE IF EXISTS user_service_db; CREATE DATABASE IF NOT EXISTS user_service_db; GRANT ALL PRIVILEGES ON user_service_db.* TO 'user_service_user'@'localhost'; FLUSH PRIVILEGES;"
+
+sudo mysql -e "DROP USER IF EXISTS 'message_service_user'@'localhost'; CREATE USER 'message_service_user'@'localhost' IDENTIFIED BY 'your_password'; DROP DATABASE IF EXISTS message_service_db; CREATE DATABASE IF NOT EXISTS message_service_db; GRANT ALL PRIVILEGES ON message_service_db.* TO 'message_service_user'@'localhost'; FLUSH PRIVILEGES;"
