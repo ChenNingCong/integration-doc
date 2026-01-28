@@ -234,7 +234,7 @@ def setup_post_reply_service():
                 'type': 'test'
             },
             'postRead': {
-                'type': 'real'
+                'type': 'rabbitmq'
             }
         }
         yaml.dump(config, config_file)  
