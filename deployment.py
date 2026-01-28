@@ -234,7 +234,7 @@ def setup_post_reply_service():
                 'type': 'test'
             },
             'postRead': {
-                'type': 'test'
+                'type': 'real'
             }
         }
         yaml.dump(config, config_file)  
